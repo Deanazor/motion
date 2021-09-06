@@ -37,17 +37,17 @@ def convolution(image, kernel, dilate=False, erode=False):
     # add padding to input
     pad_height = int(np.ceil((kernel_row - 1) / 2))
     pad_width = int(np.ceil((kernel_col - 1) / 2))
-    padded_image = np.zeros((image_row + (2 * pad_height), image_col + (2 * pad_width)))
-    padded_image[pad_height:padded_image.shape[0] - pad_height, pad_width:padded_image.shape[1] - pad_width] = image.copy()
+    img_pad = np.zeros((image_row + (2 * pad_height), image_col + (2 * pad_width)))
+    img_pad[pad_height:img_pad.shape[0] - pad_height, pad_width:img_pad.shape[1] - pad_width] = image.copy()
     
     # the convolution
     for row in range(image_row):
         for col in range(image_col):
             if dilate:
-                b = padded_image[row:row + kernel_row, col:col + kernel_col]
+                b = img_pad[row:row + kernel_row, col:col + kernel_col]
                 output[row, col] = dilate_opt(kernel,b)
             else :
-                b = padded_image[row:row + kernel_row, col:col + kernel_col]
+                b = img_pad[row:row + kernel_row, col:col + kernel_col]
                 output[row, col] = erode_opt(kernel,b)
                 
     return output
