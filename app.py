@@ -55,12 +55,12 @@ def detect(bg, fg):
     # frame difference
     img_diff = np.maximum(0, np.abs(gray_fg - gray_bg))
     # thresholding
-    img_diff = (img_diff > 30).astype(int) 
+    img_diff = (img_diff > 20).astype(int) 
 
     # find the line
     open_k = generate_kernel(5, 'cross')
     open_img = opening(img_diff, open_k)
-    dilate_k = generate_kernel(3, 'square')
+    dilate_k = generate_kernel(5, 'square')
     dilate_img = convolution(open_img, dilate_k, dilate=True)
     
     # draw the line
