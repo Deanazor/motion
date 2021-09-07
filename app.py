@@ -80,7 +80,7 @@ def main():
     start_p = time.time()
     img_bg = imread("Pujo_diam.jpg")
     img_fg = imread("Pujo_tangan.jpg")
-    print(type(img_fg))
+    # print(type(img_fg))
 
     dim = (256,144)
     img_bg = resize(img_bg, dim, interpolation=INTER_CUBIC)
