@@ -1,4 +1,4 @@
-from cv2 import imread, cvtColor, resize, INTER_CUBIC, COLOR_BGR2RGB, threshold, THRESH_BINARY
+from cv2 import imread, cvtColor, resize, INTER_CUBIC, COLOR_BGR2RGB
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,6 +31,58 @@ def log_transform(img, gamma=1):
     log_img =  c * img**gamma
     # log_img = (255.0*(img/255.0))**gamma (gagal)
     return np.array(log_img, dtype=np.uint8)
+
+def fd(bg:np.ndarray, fg:np.ndarray):
+    img_diff = np.maximum(0, np.abs(fg - bg))
+    img_diff = (img_diff > 20).astype(int)
+    return img_diff
+
+def frame_difference(bgs:list, fg:np.ndarray):
+    img_diffs = np.sum([fd(fg, bg) for bg in bgs], axis=0)
+    thresh = round(len(bgs)/2)
+    img_diffs = (img_diffs > thresh).astype(int)
+    return img_diffs
+
+def m_detect(bgs, fg):
+    """
+    Darkness blacker than black and darker than dark, I beseech thee, combine with my deep crimson.
+    The time of awakening cometh.
+    Justice, fallen upon the infallible boundary, appear now as an intangible distortions!
+    Dance, dance, dance!
+    I desire for my torrent of power a destructive force: a destructive force without equal!
+    Return all creation to cinders, and come from the abyss!
+    This is the mightiest means of attack known to man, the ultimate attack magic! 
+    DETECTION!!!!!! *sfx:BOOM*
+    """
+    start = time.time()
+
+    # resize
+    dim = (256,144)
+    bgs = [resize(bg, dim, interpolation=INTER_CUBIC) for bg in bgs]
+    fg = resize(fg, dim, interpolation=INTER_CUBIC)
+
+    # grayscale
+    gray_bgs = [bgr2gray(bg) for bg in bgs]
+    gray_fg = bgr2gray(fg)
+
+    # frame difference & Thresholding
+    img_diff = frame_difference(gray_bgs, gray_fg)
+
+    # find the line
+    open_k = generate_kernel(5, 'cross')
+    open_img = opening(img_diff, open_k)
+    dilate_k = generate_kernel(5, 'square')
+    dilate_img = convolution(open_img, dilate_k, dilate=True)
+    
+    # draw the line
+    mask = (dilate_img - open_img).astype(bool)
+    line_color = [150,0,0]
+    fg[mask] = line_color
+
+    end = time.time()
+
+    print("Detection process takes {}s to run".format(end-start))
+    return fg
 
 def detect(bg, fg):
     """

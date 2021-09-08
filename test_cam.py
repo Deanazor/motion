@@ -1,7 +1,7 @@
 from cv2 import VideoCapture, resize, INTER_CUBIC, imshow, waitKey, destroyAllWindows
-from app import detect
+from app import detect, m_detect
 cap = VideoCapture(0)
-img_bg = None
+img_bg = []
 # cv2.namedWindow("Input", cv2.WINDOW_NORMAL) 
 # Check if the webcam is opened correctly
 if not cap.isOpened():
@@ -12,8 +12,8 @@ while True:
     dim = (1280,720)
     frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
-    if img_bg is not None :
-        frame = detect(img_bg, frame)
+    if len(img_bg) == 3 :
+        frame = m_detect(img_bg, frame)
         frame = resize(frame, (1280, 720), interpolation=INTER_CUBIC)
 
     imshow('Input', frame)
@@ -23,8 +23,8 @@ while True:
         # print(frame.shape)
         break
     elif action == ord('t'):
-        img_bg = frame
-        imshow("Taken", img_bg)
+        img_bg.append(frame)
+        # imshow("Taken", img_bg)
 
 cap.release()
 destroyAllWindows()
