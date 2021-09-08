@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import time
 from kernel import generate_kernel
 from morphology import opening, convolution
+import matplotlib
+matplotlib.use( 'tkagg' )
 
 def bgr2gray(img):
     """
