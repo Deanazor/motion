@@ -17,8 +17,6 @@ pylint==2.10.2
 pyparsing==2.4.7
 python-dateutil==2.8.2
 PyWavelets==1.1.1
-scikit-image==0.18.3
-scipy==1.7.1
 six==1.16.0
 tifffile==2021.8.30
 toml==0.10.2
