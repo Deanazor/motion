@@ -1,5 +1,6 @@
 from cv2 import VideoCapture, resize, INTER_CUBIC, imshow, waitKey, destroyAllWindows
-from app import detect, m_detect
+from detection import m_detect, detect
+
 cap = VideoCapture(0)
 img_bg = []
 # cv2.namedWindow("Input", cv2.WINDOW_NORMAL) 
