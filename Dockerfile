@@ -7,13 +7,12 @@ RUN apt-get install libsm6 libxext6 libxrender-dev -y
 # Set the working directory to /app
 WORKDIR /app
 
-ADD ./requirements.txt /app/requirements.txt
+COPY requirements.txt .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt
+RUN pip install --default-timeout=100 -r requirements.txt
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+COPY . .
 
 ENV QT_DEBUG_PLUGINS=1
 
