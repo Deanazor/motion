@@ -45,7 +45,7 @@ def m_frame_difference(bgs:list, fg:np.ndarray):
     # Find the cummulative difference
     img_diffs = np.sum([s_frame_difference(fg, bg) for bg in bgs], axis=0)
     # Threshold for cummulative difference
-    thresh = round(len(bgs)/2)
+    thresh = round(len(bgs)*0.75)
     img_diffs = (img_diffs > thresh).astype(int)
 
     return img_diffs

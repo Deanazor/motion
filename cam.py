@@ -12,6 +12,7 @@ def take_bg(cap, num):
 
 def main():
     cap = VideoCapture(0)
+    dim = (1280,720)
     img_bg = []
     play = False
     # cv2.namedWindow("Input", cv2.WINDOW_NORMAL) 
@@ -21,13 +22,12 @@ def main():
         raise IOError("Can't open webcam")
             
     while True:
-        ret, frame = cap.read()
-        dim = (1280,720)
+        _, frame = cap.read()
         frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
         if play:
             frame = m_detect(img_bg, frame)
-            frame = resize(frame, (1280, 720), interpolation=INTER_CUBIC)
+            frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
         imshow('Input', frame)
 
