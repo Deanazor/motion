@@ -1,6 +1,7 @@
 import time
 from cv2 import resize, INTER_CUBIC
 from functions import bgr2gray, m_frame_difference, s_frame_difference
+from test_conv import f_convolution, f_opening
 from kernel import generate_kernel
 from morphology import opening, convolution
 
@@ -33,9 +34,9 @@ def m_detect(bgs, fg):
 
     # find the line
     open_k = generate_kernel(5, 'cross')
-    open_img = opening(img_diff, open_k)
+    open_img = f_opening(img_diff, open_k)
     dilate_k = generate_kernel(5, 'square')
-    dilate_img = convolution(open_img, dilate_k, dilate=True)
+    dilate_img = f_convolution(open_img, dilate_k, dilate=True)
     
     # draw the line
     mask = (dilate_img - open_img).astype(bool)

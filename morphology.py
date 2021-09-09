@@ -43,11 +43,10 @@ def convolution(image, kernel, dilate=False, erode=False):
     # the convolution
     for row in range(image_row):
         for col in range(image_col):
+            b = img_pad[row:row + kernel_row, col:col + kernel_col]
             if dilate:
-                b = img_pad[row:row + kernel_row, col:col + kernel_col]
                 output[row, col] = dilate_opt(kernel,b)
             else :
-                b = img_pad[row:row + kernel_row, col:col + kernel_col]
                 output[row, col] = erode_opt(kernel,b)
                 
     return output
