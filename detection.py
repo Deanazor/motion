@@ -1,7 +1,7 @@
 import time
 from cv2 import resize, INTER_CUBIC
 from functions import bgr2gray, m_frame_difference, s_frame_difference
-from test_conv import f_convolution, f_opening
+from f_morphology import f_convolution, f_opening
 from kernel import generate_kernel
 from morphology import opening, convolution
 
