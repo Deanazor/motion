@@ -1,5 +1,5 @@
 import time
-from cv2 import imread, cvtColor, resize, INTER_CUBIC, COLOR_BGR2RGB
+from cv2 import resize, INTER_CUBIC
 from functions import bgr2gray, m_frame_difference, s_frame_difference
 from kernel import generate_kernel
 from morphology import opening, convolution

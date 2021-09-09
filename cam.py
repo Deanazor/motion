@@ -1,5 +1,5 @@
 from cv2 import VideoCapture, resize, INTER_CUBIC, imshow, waitKey, destroyAllWindows
-from detection import m_detect, detect
+from detection import m_detect
 
 def take_bg(cap, num):
     bgs = []
@@ -13,7 +13,7 @@ def take_bg(cap, num):
 def main():
     cap = VideoCapture(0)
     img_bg = []
-    action = None
+    play = False
     # cv2.namedWindow("Input", cv2.WINDOW_NORMAL) 
 
     # Check if the webcam is opened correctly
@@ -25,7 +25,7 @@ def main():
         dim = (1280,720)
         frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
-        if len(img_bg) == 3 :
+        if play:
             frame = m_detect(img_bg, frame)
             frame = resize(frame, (1280, 720), interpolation=INTER_CUBIC)
 
@@ -36,8 +36,12 @@ def main():
             # print(frame.shape)
             break
         elif action == ord('t'):
-            img_bg = take_bg(cap, 3)
+            img_bg.append(frame)
             # imshow("Taken", img_bg)
+        elif action == ord('p'):
+            play = True
+        elif action == ord('s'):
+            play = False
 
     cap.release()
     destroyAllWindows()
