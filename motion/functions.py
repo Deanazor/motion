@@ -38,14 +38,14 @@ def s_frame_difference(bg:np.ndarray, fg:np.ndarray):
 
     return img_diff
 
-def m_frame_difference(bgs:list, fg:np.ndarray):
+def m_frame_difference(bgs:list, fg:np.ndarray, threshold=0.75):
     """
     Multiple Frame Difference function
     """
     # Find the cummulative difference
     img_diffs = np.sum([s_frame_difference(fg, bg) for bg in bgs], axis=0)
     # Threshold for cummulative difference
-    thresh = round(len(bgs)*0.75)
+    thresh = round(len(bgs)*threshold)
     img_diffs = (img_diffs >= thresh).astype(int)
 
     return img_diffs

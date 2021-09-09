@@ -1,11 +1,12 @@
 import time
+import numpy as np
 from cv2 import resize, INTER_CUBIC
 from .functions import bgr2gray, m_frame_difference, s_frame_difference
 from .f_morphology import f_convolution, f_opening
 from .kernel import generate_kernel
 from .morphology import opening, convolution
 
-def m_detect(bgs, fg):
+def m_detect(bgs, fg, threshold=0.75):
     """
     Function for multiple background difference
 
@@ -27,10 +28,12 @@ def m_detect(bgs, fg):
 
     # grayscale
     gray_bgs = [bgr2gray(bg) for bg in bgs]
+    # gray_bgs = np.mean([bgr2gray(bg) for bg in bgs])
     gray_fg = bgr2gray(fg)
 
     # frame difference & Thresholding
-    img_diff = m_frame_difference(gray_bgs, gray_fg)
+    img_diff = m_frame_difference(gray_bgs, gray_fg, threshold)
+    # img_diff = s_frame_difference(gray_bgs, gray_fg)
 
     # find the line
     open_k = generate_kernel(5, 'cross')

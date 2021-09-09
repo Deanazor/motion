@@ -1,21 +1,47 @@
 from cv2 import VideoCapture, resize, INTER_CUBIC, imshow, waitKey, destroyAllWindows
 from motion.detection import m_detect
+import argparse
 
-def take_bg(cap, num):
-    bgs = []
-    for _ in range(num):
-        _, frame = cap.read()
-        dim = (1280,720)
-        frame = resize(frame, dim, interpolation=INTER_CUBIC)
-        bgs.append(frame)
-    return bgs
+height = 720
+width = 1280
+threshold = 0.75
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-r",
+    "--row",
+    default=height,
+    type=int,
+    help="Input your desired window height",
+)
+
+parser.add_argument(
+    "-c",
+    "--col",
+    default=width,
+    type=int,
+    help="Input your desired window width",
+)
+
+parser.add_argument(
+    "-t",
+    "--threshold",
+    default=threshold,
+    type=float,
+    help="Input your desired threshold",
+)
+
+value_parser = parser.parse_args()
 
 def main():
+    global width, height, threshold
     cap = VideoCapture(0)
-    dim = (1280,720)
+    width = value_parser.col if value_parser.col is not None else width
+    height = value_parser.row if value_parser.col is not None else height
+    dim = (width, height)
+    threshold = value_parser.threshold if value_parser.threshold is not None else threshold
     img_bg = []
     play = False
-    # cv2.namedWindow("Input", cv2.WINDOW_NORMAL) 
 
     # Check if the webcam is opened correctly
     if not cap.isOpened():
@@ -26,19 +52,19 @@ def main():
         frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
         if play:
-            frame = m_detect(img_bg, frame)
+            frame = m_detect(img_bg, frame, threshold)
             frame = resize(frame, dim, interpolation=INTER_CUBIC)
 
         imshow('Input', frame)
 
         action = waitKey(1)
         if action == 27:
-            # print(frame.shape)
             break
-        elif action == ord('t'):
+        elif action == ord('t') and not play:
             img_bg.append(frame)
-            # imshow("Taken", img_bg)
-        elif action == ord('p'):
+        elif action == ord('r') and not play:
+            img_bg = []
+        elif action == ord('p') and len(img_bg) > 0:
             play = True
         elif action == ord('s'):
             play = False
