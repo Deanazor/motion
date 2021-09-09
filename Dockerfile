@@ -7,13 +7,15 @@ RUN apt-get install libsm6 libxext6 libxrender-dev -y
 # Set the working directory to /app
 WORKDIR /app
 
+ADD ./requirements.txt /app/requirements.txt
+
+# Install any needed packages specified in requirements.txt
+RUN pip install -r requirements.txt
+
 # Copy the current directory contents into the container at /app
 COPY . /app
 
 ENV QT_DEBUG_PLUGINS=1
-
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
 
 # Run app.py when the container launches
 CMD ["python", "cam.py"]
