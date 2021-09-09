@@ -10,7 +10,7 @@ WORKDIR /app
 ADD ./requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt
 
 # Copy the current directory contents into the container at /app
 COPY . /app
