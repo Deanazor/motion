@@ -1,5 +1,5 @@
 from cv2 import VideoCapture, resize, INTER_CUBIC, imshow, waitKey, destroyAllWindows
-from detection import m_detect
+from motion.detection import m_detect
 
 def take_bg(cap, num):
     bgs = []

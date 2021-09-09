@@ -1,9 +1,9 @@
 from cv2 import imread, cvtColor, resize, INTER_CUBIC, COLOR_BGR2RGB
 import numpy as np
 import time
-from kernel import generate_kernel
-from morphology import opening, convolution
-from functions import bgr2gray, show_img
+from motion.kernel import generate_kernel
+from motion.morphology import opening, convolution
+from motion.functions import bgr2gray, show_img
 
 # def main():
 #     img_bg = cv2.imread("image_1.jpg")

@@ -1,4 +1,4 @@
-from morphology import dilate_opt, erode_opt, opening
+from .morphology import dilate_opt, erode_opt, opening
 import numpy as np
 
 def f_convolution(image, kernel, dilate=False, erode=False):

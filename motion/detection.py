@@ -1,9 +1,9 @@
 import time
 from cv2 import resize, INTER_CUBIC
-from functions import bgr2gray, m_frame_difference, s_frame_difference
-from f_morphology import f_convolution, f_opening
-from kernel import generate_kernel
-from morphology import opening, convolution
+from .functions import bgr2gray, m_frame_difference, s_frame_difference
+from .f_morphology import f_convolution, f_opening
+from .kernel import generate_kernel
+from .morphology import opening, convolution
 
 def m_detect(bgs, fg):
     """
