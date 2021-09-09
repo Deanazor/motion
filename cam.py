@@ -39,7 +39,9 @@ def main():
     width = value_parser.col if value_parser.col is not None else width
     height = value_parser.row if value_parser.col is not None else height
     dim = (width, height)
-    threshold = value_parser.threshold if value_parser.threshold is not None else threshold
+    threshold = value_parser.threshold \
+                if value_parser.threshold is not None and value_parser.threshold < 1 \
+                else threshold
     img_bg = []
     play = False
 
