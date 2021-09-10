@@ -78,6 +78,10 @@ After the GUI pop up, you can press "T" to take background picture, "R" to reset
 
 Note : you can't start tracking if there's no background data, and you can't take background picture while tracking
 
+### Optional
+
+After you've done with the image, you can run below script to return the access control
+
 ## Background and Motion Example
 ### Background
 ![Input](./Foto/cap_1.png)
