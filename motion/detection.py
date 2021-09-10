@@ -1,6 +1,7 @@
 import time
 import numpy as np
 from cv2 import resize, INTER_CUBIC
+import cv2
 from .functions import bgr2gray, m_frame_difference, s_frame_difference
 from .f_morphology import f_convolution, f_opening
 from .kernel import generate_kernel
@@ -36,13 +37,14 @@ def m_detect(bgs, fg, threshold=0.75):
     # img_diff = s_frame_difference(gray_bgs, gray_fg)
 
     # find the line
-    open_k = generate_kernel(5, 'cross')
-    open_img = f_opening(img_diff, open_k)
-    dilate_k = generate_kernel(5, 'square')
-    dilate_img = f_convolution(open_img, dilate_k, dilate=True)
+    open_k = generate_kernel(5, 'square')
+    opening_img = cv2.morphologyEx(img_diff.astype('uint8'), cv2.MORPH_OPEN, open_k)
+    dilate_k = generate_kernel(5,'square')
+    mask = cv2.morphologyEx(opening_img, cv2.MORPH_GRADIENT, dilate_k)
     
     # draw the line
-    mask = (dilate_img - open_img).astype(bool)
+    # mask = (dilate_img - open_img).astype(bool)
+    mask = mask.astype(bool)
     line_color = [150,0,0]
     fg[mask] = line_color
 
