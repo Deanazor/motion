@@ -81,6 +81,9 @@ Note : you can't start tracking if there's no background data, and you can't tak
 ### Optional
 
 After you've done with the image, you can run below script to return the access control
+```bash
+xhost -local:docker
+```
 
 ## Background and Motion Example
 ### Background
