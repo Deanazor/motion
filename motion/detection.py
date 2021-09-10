@@ -1,15 +1,13 @@
 import time
 import numpy as np
 from cv2 import resize, INTER_CUBIC
+import cv2
 from .functions import bgr2gray, m_frame_difference, s_frame_difference
-from .f_morphology import f_convolution, f_opening
 from .kernel import generate_kernel
-from .morphology import opening, convolution
 
 def m_detect(bgs, fg, threshold=0.75):
     """
     Function for multiple background difference
-
     quoted from a certain explosion girl:
     Darkness blacker than black and darker than dark, I beseech thee, combine with my deep crimson.
     The time of awakening cometh.
@@ -28,21 +26,18 @@ def m_detect(bgs, fg, threshold=0.75):
 
     # grayscale
     gray_bgs = [bgr2gray(bg) for bg in bgs]
-    # gray_bgs = np.mean([bgr2gray(bg) for bg in bgs])
     gray_fg = bgr2gray(fg)
 
     # frame difference & Thresholding
     img_diff = m_frame_difference(gray_bgs, gray_fg, threshold)
-    # img_diff = s_frame_difference(gray_bgs, gray_fg)
 
     # find the line
-    open_k = generate_kernel(5, 'cross')
-    open_img = f_opening(img_diff, open_k)
-    dilate_k = generate_kernel(5, 'square')
-    dilate_img = f_convolution(open_img, dilate_k, dilate=True)
+    open_k = generate_kernel(5, 'square')
+    opening_img = cv2.morphologyEx(img_diff.astype('uint8'), cv2.MORPH_OPEN, open_k)
+    dilate_k = generate_kernel(5,'square')
+    mask = (cv2.morphologyEx(opening_img, cv2.MORPH_GRADIENT, dilate_k)).astype(bool)
     
     # draw the line
-    mask = (dilate_img - open_img).astype(bool)
     line_color = [150,0,0]
     fg[mask] = line_color
 
@@ -54,7 +49,6 @@ def m_detect(bgs, fg, threshold=0.75):
 def detect(bg, fg):
     """
     Function for single background difference
-
     quoted from a certain explosion girl:
     Darkness blacker than black and darker than dark, I beseech thee, combine with my deep crimson.
     The time of awakening cometh.
@@ -79,13 +73,12 @@ def detect(bg, fg):
     img_diff = s_frame_difference(gray_bg, gray_fg)
 
     # find the line
-    open_k = generate_kernel(5, 'cross')
-    open_img = opening(img_diff, open_k)
-    dilate_k = generate_kernel(5, 'square')
-    dilate_img = convolution(open_img, dilate_k, dilate=True)
+    open_k = generate_kernel(5, 'square')
+    opening_img = cv2.morphologyEx(img_diff.astype('uint8'), cv2.MORPH_OPEN, open_k)
+    dilate_k = generate_kernel(5,'square')
+    mask = (cv2.morphologyEx(opening_img, cv2.MORPH_GRADIENT, dilate_k)).astype(bool)
     
     # draw the line
-    mask = (dilate_img - open_img).astype(bool)
     line_color = [150,0,0]
     fg[mask] = line_color
 
